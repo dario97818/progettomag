@@ -1,0 +1,8 @@
+	<%
+if(session.getAttribute("auth")!=null || session.getAttribute("auth-admin")!=null)
+{
+}
+else
+	response.sendRedirect("/index.jsp");
+
+%>

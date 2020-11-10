@@ -1,0 +1,64 @@
+<%@ page import="it.unirc.twb.progetto.been.*"%>
+<%MessaggioDAO mdao=new MessaggioDAO(); %>
+<ul class="links">
+			<li><a href="/index.jsp">Home</a></li>
+			<%if(session.getAttribute("auth")==null && session.getAttribute("auth-admin")==null)
+			{
+			%>
+			<li><a href="/registrazione.jsp">Registrati</a></li>
+			<li><br>Login
+				<form action="/Login" method="post">
+					<div class="col-6 col-12-xsmall">
+						<input type="text" name="name" id="name" value=""
+							placeholder="Email" required/>
+					</div>
+					<br>
+					<div class="col-6 col-12-xsmall">
+						<input type="password" name="password" id="password" value=""
+							placeholder="Password" required/>
+					</div>
+					<br>
+					<ul class="actions">
+						<li><input type="submit" value="Login" class="primary" /></li>
+						<li><input type="reset" value="Reset" /></li>
+					</ul>
+					<br>
+					
+					
+
+				</form>
+				</li>
+			<%}
+			else if (session.getAttribute("auth")!=null){%>
+			<%
+			
+			int id_utn=(int)session.getAttribute("id_utente");
+			Utente ut=new Utente();
+			ut.setId(id_utn);
+			UtenteDAO udao=new UtenteDAO();
+			ut=udao.getUtente(ut);
+			%>
+			<li><a href="/generic.jsp">Generic</a></li>
+			<li><a href="/Annuncio/NuovoAnnuncio.jsp">Nuovo Annuncio</a></li>
+			<li><a href="/ModificaUtente?id=<%=id_utn%>">Modifica Profilo</a></li>
+			<li><a href="/RicercaAnnuncio?id=<%=id_utn%>">Miei Annunci</a></li>
+			<li><a href="/RichiestaGestionePreventivi">Gestione preventivi</a></li>
+			<li>
+			<a href="/RichiediTuttiMessaggi?id=<%=id_utn%>" class="notification">
+					<span>Messaggi</span>
+						<% if(mdao.MessaggiNonLetti(ut)!=0){ %>
+  					<span class="badge" style="background-color: #fa3e3e; border-radius: 2px; color: white; padding: 1px 3px; font-size: 10px; top: 0; right: 0;"><%=mdao.MessaggiNonLetti(ut)%></span>
+			<% } %>
+			</a>
+			</li>
+			<li><a href="/Exit">Esci</a></li>
+			<%}
+			else
+			{%>
+			<li><a href="/generic.jsp">Generic</a></li>
+			<li><a href="/RichiediGestisciUtenti">Gestisci utenti</a></li>
+			<li><a href="/RichiediGestisciAdimn">Gestione amministratori</a></li>
+			<li><a href="/Exit">Esci</a></li>
+			<%} %>
+				
+		</ul>
